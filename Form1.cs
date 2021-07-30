@@ -16,6 +16,7 @@ namespace WinWifi
 		public Form1()
 		{
 			InitializeComponent();
+      notify.Visible = false;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -92,10 +93,28 @@ namespace WinWifi
         var output = string.Join(":", Enumerable.Range(0, 6)
           .Select(i => MAC.Substring(i * 2, 2)));
 
+        MAC = output;
+
         var s = $"{ssid} : {MAC} : {rx / 1000} RX mbps {tx / 1000} TX mbps\r\n";
 
         tb.AppendText(s);
       }
+    }
+
+		private void Form1_Resize(object sender, EventArgs e)
+		{
+      if (this.WindowState == FormWindowState.Minimized)
+      {
+        Hide();
+        notify.Visible = true;
+      }
+    }
+
+		private void notify_DoubleClick(object sender, EventArgs e)
+		{
+      Show();
+      this.WindowState = FormWindowState.Normal;
+      notify.Visible = false;
     }
 	}
 }
