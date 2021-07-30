@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,10 +15,28 @@ namespace WinWifi
 {
 	public partial class Form1 : Form
 	{
+    public class WifiStatus
+		{
+			public string SSID { get; set; }
+			public string APMacAdress { get; set; }
+      public string OLDAPMacAdress { get; set; }
+      public uint RX { get; set; }
+      public uint TX { get; set; }
+      public uint SignalQuality { get; set; }
+
+      public WifiStatus()
+			{
+
+			}
+    }
+
+    public WifiStatus wifistatus = null;
+
 		public Form1()
 		{
 			InitializeComponent();
       notify.Visible = false;
+      wifistatus = new WifiStatus();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -80,26 +100,47 @@ namespace WinWifi
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-      var wlanClient = new WlanClient();
-      
-      //foreach (WlanClient.WlanInterface wlanInterface in wlanClient.Interfaces)
-      {
-        var MacAdressOfConnectedAP = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.Dot11Bssid;
-        var ssid = Encoding.UTF8.GetString(wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.dot11Ssid.SSID).Replace("\0", string.Empty); ;
-        uint tx = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.txRate;
-        uint rx = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.rxRate;
+			GetConnectedWifiStatus();
+		}
 
-        string MAC = MacAdressOfConnectedAP.ToString();
-        var output = string.Join(":", Enumerable.Range(0, 6)
-          .Select(i => MAC.Substring(i * 2, 2)));
+		private void GetConnectedWifiStatus()
+		{
+			try
+			{
+				var wlanClient = new WlanClient();
 
-        MAC = output;
+				//foreach (WlanClient.WlanInterface wlanInterface in wlanClient.Interfaces)
+				{
+					var MacAdressOfConnectedAP = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.Dot11Bssid;
+          wifistatus.SSID = Encoding.UTF8.GetString(wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.dot11Ssid.SSID).Replace("\0", string.Empty); ;
+					wifistatus.TX = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.txRate;
+          wifistatus.RX = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.rxRate;
+          wifistatus.SignalQuality = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.wlanSignalQuality;
 
-        var s = $"{ssid} : {MAC} : {rx / 1000} RX mbps {tx / 1000} TX mbps\r\n";
+          string MAC = MacAdressOfConnectedAP.ToString();
+					var output = string.Join(":", Enumerable.Range(0, 6)
+						.Select(i => MAC.Substring(i * 2, 2)));
 
-        tb.AppendText(s);
-      }
-    }
+					MAC = output;
+
+          wifistatus.APMacAdress = MAC;
+          System.Net.NetworkInformation.IPInterfaceProperties ip = wlanClient.Interfaces[0].NetworkInterface.GetIPProperties();
+          System.Net.NetworkInformation.IPv4InterfaceProperties ip4 = ip.GetIPv4Properties();
+
+          string s = "jhek";
+
+        }
+			}
+			catch (Exception)
+			{
+        wifistatus.APMacAdress = string.Empty;
+        wifistatus.OLDAPMacAdress = string.Empty;
+        wifistatus.RX = 0;
+        wifistatus.TX = 0;
+        wifistatus.SSID = string.Empty;
+        wifistatus.SignalQuality = 0;
+			}
+		}
 
 		private void Form1_Resize(object sender, EventArgs e)
 		{
@@ -115,6 +156,37 @@ namespace WinWifi
       Show();
       this.WindowState = FormWindowState.Normal;
       notify.Visible = false;
+      this.CenterToScreen();
+    }
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+      this.CenterToScreen();
+		}
+
+		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+		{
+      notify.Visible = false;
+		}
+
+		private void button4_Click(object sender, EventArgs e)
+		{
+      string ipAddress = "";
+      var ni = NetworkInterface.GetAllNetworkInterfaces(); 
+      foreach (NetworkInterface item in ni.Where(x=>x.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
+      {
+        if (item.OperationalStatus == OperationalStatus.Up) //&& item.NetworkInterfaceType == ?
+        {
+          foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
+          {
+            if (ip.Address.AddressFamily == AddressFamily.InterNetwork & !System.Net.IPAddress.IsLoopback(ip.Address))
+            {
+              ipAddress = ip.Address.ToString();
+              tb.AppendText(ipAddress+ "\r\n");
+            }
+          }
+        }
+      }
     }
 	}
 }
