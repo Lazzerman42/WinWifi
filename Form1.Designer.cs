@@ -47,6 +47,7 @@ namespace WinWifi
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.tsCombo = new System.Windows.Forms.ToolStripComboBox();
+			this.tsLabel = new System.Windows.Forms.ToolStripLabel();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.tbAP = new System.Windows.Forms.Label();
 			this.tbIP = new System.Windows.Forms.Label();
@@ -55,7 +56,6 @@ namespace WinWifi
 			this.tbCurrentTS = new System.Windows.Forms.Label();
 			this.tbOldAP = new System.Windows.Forms.Label();
 			this.tbOldTS = new System.Windows.Forms.Label();
-			this.tsLabel = new System.Windows.Forms.ToolStripLabel();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -73,9 +73,10 @@ namespace WinWifi
 			this.label7.AutoSize = true;
 			this.label7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.label7.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label7.Location = new System.Drawing.Point(5, 138);
+			this.label7.Location = new System.Drawing.Point(8, 207);
+			this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(123, 18);
+			this.label7.Size = new System.Drawing.Size(176, 29);
 			this.label7.TabIndex = 15;
 			this.label7.Text = "Signal Quality";
 			// 
@@ -84,9 +85,10 @@ namespace WinWifi
 			this.label6.AutoSize = true;
 			this.label6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.label6.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(5, 238);
+			this.label6.Location = new System.Drawing.Point(8, 357);
+			this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(133, 18);
+			this.label6.Size = new System.Drawing.Size(193, 29);
 			this.label6.TabIndex = 13;
 			this.label6.Text = "Old Timestamp";
 			// 
@@ -95,9 +97,10 @@ namespace WinWifi
 			this.label5.AutoSize = true;
 			this.label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.label5.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(5, 205);
+			this.label5.Location = new System.Drawing.Point(8, 308);
+			this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(100, 18);
+			this.label5.Size = new System.Drawing.Size(146, 29);
 			this.label5.TabIndex = 12;
 			this.label5.Text = "Old AP Mac";
 			// 
@@ -106,9 +109,10 @@ namespace WinWifi
 			this.label4.AutoSize = true;
 			this.label4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.label4.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label4.Location = new System.Drawing.Point(5, 172);
+			this.label4.Location = new System.Drawing.Point(8, 258);
+			this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(99, 18);
+			this.label4.Size = new System.Drawing.Size(145, 29);
 			this.label4.TabIndex = 11;
 			this.label4.Text = "Timestamp";
 			// 
@@ -117,9 +121,10 @@ namespace WinWifi
 			this.label3.AutoSize = true;
 			this.label3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.label3.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(5, 105);
+			this.label3.Location = new System.Drawing.Point(8, 158);
+			this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(126, 18);
+			this.label3.Size = new System.Drawing.Size(186, 29);
 			this.label3.TabIndex = 10;
 			this.label3.Text = "Speed TX / RX";
 			// 
@@ -128,9 +133,10 @@ namespace WinWifi
 			this.label2.AutoSize = true;
 			this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label2.Location = new System.Drawing.Point(5, 72);
+			this.label2.Location = new System.Drawing.Point(8, 108);
+			this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(130, 18);
+			this.label2.Size = new System.Drawing.Size(187, 29);
 			this.label2.TabIndex = 9;
 			this.label2.Text = "Current Wifi IP";
 			// 
@@ -139,9 +145,10 @@ namespace WinWifi
 			this.label1.AutoSize = true;
 			this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(5, 39);
+			this.label1.Location = new System.Drawing.Point(8, 58);
+			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(132, 18);
+			this.label1.Size = new System.Drawing.Size(196, 29);
 			this.label1.TabIndex = 8;
 			this.label1.Text = "Current AP Mac";
 			// 
@@ -159,8 +166,8 @@ namespace WinWifi
             this.tsLabel});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-			this.toolStrip1.Size = new System.Drawing.Size(460, 31);
+			this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
+			this.toolStrip1.Size = new System.Drawing.Size(690, 33);
 			this.toolStrip1.TabIndex = 16;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -170,14 +177,14 @@ namespace WinWifi
 			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
 			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton1.Name = "toolStripButton1";
-			this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
+			this.toolStripButton1.Size = new System.Drawing.Size(34, 28);
 			this.toolStripButton1.Text = "Refresh";
 			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 33);
 			// 
 			// toolStripButton2
 			// 
@@ -185,7 +192,7 @@ namespace WinWifi
 			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton2.Name = "toolStripButton2";
-			this.toolStripButton2.Size = new System.Drawing.Size(28, 28);
+			this.toolStripButton2.Size = new System.Drawing.Size(34, 28);
 			this.toolStripButton2.Text = "Save friendlyname for AP";
 			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
@@ -193,13 +200,13 @@ namespace WinWifi
 			// 
 			this.tsTbName.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.tsTbName.Name = "tsTbName";
-			this.tsTbName.Size = new System.Drawing.Size(150, 31);
+			this.tsTbName.Size = new System.Drawing.Size(223, 33);
 			this.tsTbName.Text = "friendly name";
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
 			// 
 			// toolStripButton3
 			// 
@@ -208,7 +215,7 @@ namespace WinWifi
 			this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
 			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton3.Name = "toolStripButton3";
-			this.toolStripButton3.Size = new System.Drawing.Size(28, 28);
+			this.toolStripButton3.Size = new System.Drawing.Size(34, 28);
 			this.toolStripButton3.Text = "Auto refresh disabled";
 			this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
 			// 
@@ -216,16 +223,22 @@ namespace WinWifi
 			// 
 			this.tsCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tsCombo.Items.AddRange(new object[] {
-            "1",
+            "2",
             "5",
             "30",
             "60",
             "180",
             "600"});
 			this.tsCombo.Name = "tsCombo";
-			this.tsCombo.Size = new System.Drawing.Size(75, 31);
+			this.tsCombo.Size = new System.Drawing.Size(110, 33);
 			this.tsCombo.ToolTipText = "Refresh interval in seconds";
 			this.tsCombo.SelectedIndexChanged += new System.EventHandler(this.tsCombo_SelectedIndexChanged);
+			// 
+			// tsLabel
+			// 
+			this.tsLabel.Name = "tsLabel";
+			this.tsLabel.Size = new System.Drawing.Size(177, 28);
+			this.tsLabel.Text = "Autorefresh disabled";
 			// 
 			// timer1
 			// 
@@ -236,10 +249,12 @@ namespace WinWifi
 			// 
 			this.tbAP.BackColor = System.Drawing.Color.White;
 			this.tbAP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tbAP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tbAP.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tbAP.Location = new System.Drawing.Point(144, 35);
+			this.tbAP.Location = new System.Drawing.Point(216, 52);
+			this.tbAP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tbAP.Name = "tbAP";
-			this.tbAP.Size = new System.Drawing.Size(310, 27);
+			this.tbAP.Size = new System.Drawing.Size(464, 40);
 			this.tbAP.TabIndex = 17;
 			this.tbAP.Text = "AP";
 			this.tbAP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -248,10 +263,12 @@ namespace WinWifi
 			// 
 			this.tbIP.BackColor = System.Drawing.Color.White;
 			this.tbIP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tbIP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tbIP.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tbIP.Location = new System.Drawing.Point(144, 68);
+			this.tbIP.Location = new System.Drawing.Point(216, 102);
+			this.tbIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tbIP.Name = "tbIP";
-			this.tbIP.Size = new System.Drawing.Size(310, 27);
+			this.tbIP.Size = new System.Drawing.Size(464, 40);
 			this.tbIP.TabIndex = 18;
 			this.tbIP.Text = "IP";
 			this.tbIP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -260,10 +277,12 @@ namespace WinWifi
 			// 
 			this.tbSpeed.BackColor = System.Drawing.Color.White;
 			this.tbSpeed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tbSpeed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tbSpeed.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tbSpeed.Location = new System.Drawing.Point(144, 101);
+			this.tbSpeed.Location = new System.Drawing.Point(216, 152);
+			this.tbSpeed.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tbSpeed.Name = "tbSpeed";
-			this.tbSpeed.Size = new System.Drawing.Size(310, 27);
+			this.tbSpeed.Size = new System.Drawing.Size(464, 40);
 			this.tbSpeed.TabIndex = 19;
 			this.tbSpeed.Text = "Speed";
 			this.tbSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -272,10 +291,12 @@ namespace WinWifi
 			// 
 			this.tbQuality.BackColor = System.Drawing.Color.White;
 			this.tbQuality.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tbQuality.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tbQuality.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tbQuality.Location = new System.Drawing.Point(144, 134);
+			this.tbQuality.Location = new System.Drawing.Point(216, 201);
+			this.tbQuality.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tbQuality.Name = "tbQuality";
-			this.tbQuality.Size = new System.Drawing.Size(310, 27);
+			this.tbQuality.Size = new System.Drawing.Size(464, 40);
 			this.tbQuality.TabIndex = 20;
 			this.tbQuality.Text = "Quality";
 			this.tbQuality.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -284,10 +305,12 @@ namespace WinWifi
 			// 
 			this.tbCurrentTS.BackColor = System.Drawing.Color.White;
 			this.tbCurrentTS.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tbCurrentTS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tbCurrentTS.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tbCurrentTS.Location = new System.Drawing.Point(144, 168);
+			this.tbCurrentTS.Location = new System.Drawing.Point(216, 252);
+			this.tbCurrentTS.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tbCurrentTS.Name = "tbCurrentTS";
-			this.tbCurrentTS.Size = new System.Drawing.Size(310, 27);
+			this.tbCurrentTS.Size = new System.Drawing.Size(464, 40);
 			this.tbCurrentTS.TabIndex = 21;
 			this.tbCurrentTS.Text = "Current TS";
 			this.tbCurrentTS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -296,10 +319,12 @@ namespace WinWifi
 			// 
 			this.tbOldAP.BackColor = System.Drawing.Color.White;
 			this.tbOldAP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tbOldAP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tbOldAP.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tbOldAP.Location = new System.Drawing.Point(144, 201);
+			this.tbOldAP.Location = new System.Drawing.Point(216, 302);
+			this.tbOldAP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tbOldAP.Name = "tbOldAP";
-			this.tbOldAP.Size = new System.Drawing.Size(310, 27);
+			this.tbOldAP.Size = new System.Drawing.Size(464, 40);
 			this.tbOldAP.TabIndex = 22;
 			this.tbOldAP.Text = "OldAP";
 			this.tbOldAP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -308,25 +333,21 @@ namespace WinWifi
 			// 
 			this.tbOldTS.BackColor = System.Drawing.Color.White;
 			this.tbOldTS.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tbOldTS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.tbOldTS.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.tbOldTS.Location = new System.Drawing.Point(144, 234);
+			this.tbOldTS.Location = new System.Drawing.Point(216, 351);
+			this.tbOldTS.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tbOldTS.Name = "tbOldTS";
-			this.tbOldTS.Size = new System.Drawing.Size(310, 27);
+			this.tbOldTS.Size = new System.Drawing.Size(464, 40);
 			this.tbOldTS.TabIndex = 23;
 			this.tbOldTS.Text = "Old TS";
 			this.tbOldTS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// tsLabel
-			// 
-			this.tsLabel.Name = "tsLabel";
-			this.tsLabel.Size = new System.Drawing.Size(116, 15);
-			this.tsLabel.Text = "Autorefresh disabled";
-			// 
 			// Form1
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-			this.ClientSize = new System.Drawing.Size(460, 273);
+			this.ClientSize = new System.Drawing.Size(690, 410);
 			this.Controls.Add(this.tbOldTS);
 			this.Controls.Add(this.tbOldAP);
 			this.Controls.Add(this.tbCurrentTS);
@@ -343,6 +364,7 @@ namespace WinWifi
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label6);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "Form1";
 			this.Text = "Wifi Connected AP - Lazze Ziden 2021 -";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
