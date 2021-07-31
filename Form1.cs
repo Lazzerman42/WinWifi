@@ -142,7 +142,9 @@ namespace WinWifi
 			}
 			catch (Exception)
 			{
-        wifistatus.APMacAdress = string.Empty;
+				wifistatus.APMacAdress = string.Empty;
+				tbAP.Text="Not connected to WiFi...";
+				
         wifistatus.OLDAPMacAdress = string.Empty;
         wifistatus.RX = 0;
         wifistatus.TX = 0;
@@ -271,7 +273,8 @@ namespace WinWifi
 				timer1.Interval = int.Parse(tsCombo.SelectedItem.ToString()) * 1000;
 				timer1.Start();
 				toolStripButton3.Checked = true;
-				toolStripButton3.Text = "Auto refresh every 3 minutes";
+				toolStripButton3.Text = "Auto refresh On";
+				tsLabel.Text = "Autorefresh active";
 			}
 			if (toolStripButton3.Checked == false)
 			{
@@ -279,9 +282,16 @@ namespace WinWifi
 				toolStripButton3.CheckState = CheckState.Unchecked;
 				timer1.Stop();
 				toolStripButton3.Checked = false;
-				toolStripButton3.Text = "Auto refresh disabled"; 
-
+				toolStripButton3.Text = "Auto refresh disabled";
+				tsLabel.Text = "Autorefresh disabled";
 			}
+		}
+
+		private void tsCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			timer1.Stop();
+			timer1.Interval = int.Parse(tsCombo.SelectedItem.ToString()) * 1000;
+			timer1.Start();
 		}
 	}
 }
