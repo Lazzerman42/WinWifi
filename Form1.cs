@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -19,16 +20,38 @@ namespace WinWifi
 		{
 			public string SSID { get; set; }
 			public string APMacAdress { get; set; }
+			public DateTime CurrentTS { get; set; }
+      public DateTime LastTS { get; set; }
       public string OLDAPMacAdress { get; set; }
       public uint RX { get; set; }
       public uint TX { get; set; }
       public uint SignalQuality { get; set; }
+			public string WifiIP { get; set; }
 
-      public WifiStatus()
+			public WifiStatus()
 			{
 
 			}
     }
+
+		[Serializable]
+		public class FriendlyName
+		{
+			public string MAC { get; set; }
+			public string Name { get; set; }
+
+			public FriendlyName()
+			{
+
+			}
+			public FriendlyName(string mac, string name)
+			{
+				MAC = mac;
+				Name = name;
+			}
+		}
+
+		public List<FriendlyName> FriendlyNames;
 
     public WifiStatus wifistatus = null;
 
@@ -37,72 +60,9 @@ namespace WinWifi
 			InitializeComponent();
       notify.Visible = false;
       wifistatus = new WifiStatus();
+			FriendlyNames = new List<FriendlyName>();
 		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-      WlanClient client = new WlanClient();
-      foreach (WlanClient.WlanInterface wlanIface in client.Interfaces)
-      {
-        // Lists all networks with WEP security
-        Wlan.WlanAvailableNetwork[] networks = wlanIface.GetAvailableNetworkList(0);
-        foreach (Wlan.WlanAvailableNetwork network in networks)
-        {
-          tb.AppendText("Found network with SSID: " + GetStringForSSID(network.dot11Ssid) +"\r\n");
-        }
-
-        // Retrieves XML configurations of existing profiles.
-        // This can assist you in constructing your own XML configuration
-        // (that is, it will give you an example to follow).
-        foreach (Wlan.WlanProfileInfo profileInfo in wlanIface.GetProfiles())
-        {
-          string name = profileInfo.profileName; // this is typically the network's SSID
-          string xml = wlanIface.GetProfileXml(profileInfo.profileName);
-
-          tb.AppendText(xml + "\r\n");
-        }
-
-        // Connects to a known network with WEP security
-        //string profileName = "Cheesecake"; // this is also the SSID
-        //string mac = "52544131303235572D454137443638";
-        //string key = "hello";
-        //string profileXml = string.Format("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>{0}</name><SSIDConfig><SSID><hex>{1}</hex><name>{0}</name></SSID></SSIDConfig><connectionType>ESS</connectionType><MSM><security><authEncryption><authentication>open</authentication><encryption>WEP</encryption><useOneX>false</useOneX></authEncryption><sharedKey><keyType>networkKey</keyType><protected>false</protected><keyMaterial>{2}</keyMaterial></sharedKey><keyIndex>0</keyIndex></security></MSM></WLANProfile>", profileName, mac, key);
-        //wlanIface.SetProfile(Wlan.WlanProfileFlags.AllUser, profileXml, true);
-        //wlanIface.Connect(Wlan.WlanConnectionMode.Profile, Wlan.Dot11BssType.Any, profileName);
-      }
-    }
-
-    static string GetStringForSSID(Wlan.Dot11Ssid ssid)
-    {
-      return Encoding.ASCII.GetString(ssid.SSID, 0, (int)ssid.SSIDLength);
-    }
-
-		private void button2_Click(object sender, EventArgs e)
-		{
-      var wlanClient = new WlanClient();
-      foreach (WlanClient.WlanInterface wlanInterface in wlanClient.Interfaces)
-      {
-        Wlan.WlanBssEntry[] wlanBssEntries = wlanInterface.GetNetworkBssList();
-        foreach (Wlan.WlanBssEntry wlanBssEntry in wlanBssEntries)
-        {
-          byte[] macAddr = wlanBssEntry.dot11Bssid;
-          var macAddrLen = (uint)macAddr.Length;
-          var str = new string[(int)macAddrLen];
-          for (int i = 0; i < macAddrLen; i++)
-          {
-            str[i] = macAddr[i].ToString("x2");
-          }
-          string mac = string.Join("", str);
-          tb.AppendText (GetStringForSSID(wlanBssEntry.dot11Ssid) + " : " + mac +  "\r\n");
-        }
-      }
-    }
-
-		private void button3_Click(object sender, EventArgs e)
-		{
-			GetConnectedWifiStatus();
-		}
-
+		
 		private void GetConnectedWifiStatus()
 		{
 			try
@@ -122,12 +82,45 @@ namespace WinWifi
 						.Select(i => MAC.Substring(i * 2, 2)));
 
 					MAC = output;
+					
+					if( string.IsNullOrEmpty(wifistatus.APMacAdress))
+					{
+						wifistatus.APMacAdress = MAC;
+						wifistatus.CurrentTS = DateTime.Now;
+					}
 
-          wifistatus.APMacAdress = MAC;
-          System.Net.NetworkInformation.IPInterfaceProperties ip = wlanClient.Interfaces[0].NetworkInterface.GetIPProperties();
-          System.Net.NetworkInformation.IPv4InterfaceProperties ip4 = ip.GetIPv4Properties();
+					if( wifistatus.APMacAdress != MAC )
+					{
+						// New AP
+						wifistatus.OLDAPMacAdress = wifistatus.APMacAdress;
+						wifistatus.LastTS = wifistatus.CurrentTS;
+						wifistatus.APMacAdress = MAC;
+						wifistatus.CurrentTS = DateTime.Now;
+					}
+          else
+					{
+						wifistatus.CurrentTS = DateTime.Now;
+					}
+					wifistatus.APMacAdress = MAC;
+					wifistatus.WifiIP = GetWifiIPAdress();
 
-          string s = "jhek";
+					FriendlyName f = FriendlyNames.Find(x => x.MAC == MAC);
+					if(f != null)
+					{
+						tbAP.Text = f.Name + " : " + wifistatus.APMacAdress;
+					}
+					else
+						tbAP.Text = wifistatus.APMacAdress;
+
+					tbIP.Text = wifistatus.WifiIP;
+					tbCurrentTS.Text = wifistatus.CurrentTS.ToLongTimeString();
+					tbOldAP.Text = wifistatus.OLDAPMacAdress;
+					tbOldTS.Text = wifistatus.LastTS.ToLongTimeString();
+					if (tbOldTS.Text.Equals("00:00:00"))
+						tbOldTS.Text = "";
+
+					tbQuality.Text = wifistatus.SignalQuality.ToString() +"%";
+					tbSpeed.Text = (wifistatus.TX / 1000).ToString() + " / " + (wifistatus.RX/1000).ToString() + " mbps" ;
 
         }
 			}
@@ -162,31 +155,111 @@ namespace WinWifi
 		private void Form1_Load(object sender, EventArgs e)
 		{
       this.CenterToScreen();
+			try
+			{
+				FriendlyNames = ReadFromBinaryFile<List<FriendlyName>>(@".\list.dat");
+			}
+			catch { }
+
+			GetConnectedWifiStatus();
+
+			timer1.Interval = 1000 * 60 * 3; // third minute
 		}
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
 		{
-      notify.Visible = false;
+			timer1.Stop();
+			notify.Visible = false;
 		}
 
-		private void button4_Click(object sender, EventArgs e)
+		
+		private string GetWifiIPAdress()
 		{
-      string ipAddress = "";
-      var ni = NetworkInterface.GetAllNetworkInterfaces(); 
-      foreach (NetworkInterface item in ni.Where(x=>x.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
-      {
-        if (item.OperationalStatus == OperationalStatus.Up) //&& item.NetworkInterfaceType == ?
-        {
-          foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
-          {
-            if (ip.Address.AddressFamily == AddressFamily.InterNetwork & !System.Net.IPAddress.IsLoopback(ip.Address))
-            {
-              ipAddress = ip.Address.ToString();
-              tb.AppendText(ipAddress+ "\r\n");
-            }
-          }
-        }
-      }
-    }
+			string ipAddress = "";
+			try
+			{
+				var ni = NetworkInterface.GetAllNetworkInterfaces();
+				foreach (NetworkInterface item in ni.Where(x => x.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
+				{
+					if (item.OperationalStatus == OperationalStatus.Up) //&& item.NetworkInterfaceType == ?
+					{
+						foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
+						{
+							if (ip.Address.AddressFamily == AddressFamily.InterNetwork & !System.Net.IPAddress.IsLoopback(ip.Address))
+							{
+								ipAddress = ip.Address.ToString();
+							}
+						}
+					}
+				}
+			}
+			catch { }
+      return ipAddress;
+		}
+		// WriteToBinaryFile(@".\list.dat", FriendlyNames, false);
+		//  FriendlyNames = ReadFromBinaryFile<List<FriendlyName>>(@".\list.dat");
+
+		public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+		{
+			using (System.IO.Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+			{
+				var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+				binaryFormatter.Serialize(stream, objectToWrite);
+			}
+		}
+		public static T ReadFromBinaryFile<T>(string filePath)
+		{
+				using (Stream stream = File.Open(filePath, FileMode.Open))
+				{
+					var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+					return (T)binaryFormatter.Deserialize(stream);
+				}
+		}
+
+		private void toolStripButton1_Click(object sender, EventArgs e)
+		{
+			GetConnectedWifiStatus();
+		}
+
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			if (FriendlyNames.Exists(x => x.MAC == wifistatus.APMacAdress))
+			{
+				FriendlyName f = FriendlyNames.Find(x => x.MAC == wifistatus.APMacAdress);
+				f.Name = tsTbName.Text;
+			}
+			else
+			{
+				FriendlyNames.Add(new FriendlyName(wifistatus.APMacAdress, tsTbName.Text));
+			}
+			WriteToBinaryFile(@".\list.dat", FriendlyNames, false);
+			tsTbName.Text = "";
+			GetConnectedWifiStatus();
+		}
+
+		private void timer1_Tick(object sender, EventArgs e)
+		{
+			GetConnectedWifiStatus();
+		}
+
+		private void toolStripButton3_Click(object sender, EventArgs e)
+		{
+			if (toolStripButton3.Checked == true)
+			{
+				toolStripButton3.CheckState = CheckState.Checked;
+				timer1.Start();
+				toolStripButton3.Checked = true;
+				toolStripButton3.Text = "Auto refresh every 3 minutes";
+			}
+			if (toolStripButton3.Checked == false)
+			{
+
+				toolStripButton3.CheckState = CheckState.Unchecked;
+				timer1.Stop();
+				toolStripButton3.Checked = false;
+				toolStripButton3.Text = "Auto refresh disabled"; 
+
+			}
+		}
 	}
 }
