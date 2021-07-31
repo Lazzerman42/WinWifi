@@ -96,14 +96,14 @@ namespace WinWifi
 						wifistatus.LastTS = wifistatus.CurrentTS;
 						wifistatus.APMacAdress = MAC;
 						wifistatus.CurrentTS = DateTime.Now;
-						if(notify.Visible == true)
+											
+						if (notify.Visible == true)
 						{
 							Show();
 							this.WindowState = FormWindowState.Normal;
 							notify.Visible = false;
 							this.CenterToScreen();
 						}
-
 					}
           else
 					{
@@ -122,7 +122,15 @@ namespace WinWifi
 
 					tbIP.Text = wifistatus.WifiIP;
 					tbCurrentTS.Text = wifistatus.CurrentTS.ToLongTimeString();
-					tbOldAP.Text = wifistatus.OLDAPMacAdress;
+
+					FriendlyName ff = FriendlyNames.Find(x => x.MAC == wifistatus.OLDAPMacAdress);
+					if (ff != null)
+					{
+						tbOldAP.Text = ff.Name + " : " + wifistatus.OLDAPMacAdress;
+					}
+					else
+						tbOldAP.Text = wifistatus.OLDAPMacAdress;
+	
 					tbOldTS.Text = wifistatus.LastTS.ToLongTimeString();
 					if (tbOldTS.Text.Equals("00:00:00"))
 						tbOldTS.Text = "";
@@ -149,8 +157,12 @@ namespace WinWifi
       {
         Hide();
         notify.Visible = true;
-      }
-    }
+
+				string notifyText = $"Connected: {tbAP.Text}";
+
+				notify.Text = notifyText;
+			}
+		}
 
 		private void notify_DoubleClick(object sender, EventArgs e)
 		{
@@ -171,7 +183,8 @@ namespace WinWifi
 
 			GetConnectedWifiStatus();
 
-			timer1.Interval = 1000 * 60 * 3; // third minute
+			tsCombo.SelectedIndex = 4;
+			
 		}
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -255,6 +268,7 @@ namespace WinWifi
 			if (toolStripButton3.Checked == true)
 			{
 				toolStripButton3.CheckState = CheckState.Checked;
+				timer1.Interval = int.Parse(tsCombo.SelectedItem.ToString()) * 1000;
 				timer1.Start();
 				toolStripButton3.Checked = true;
 				toolStripButton3.Text = "Auto refresh every 3 minutes";
