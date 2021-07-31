@@ -96,6 +96,14 @@ namespace WinWifi
 						wifistatus.LastTS = wifistatus.CurrentTS;
 						wifistatus.APMacAdress = MAC;
 						wifistatus.CurrentTS = DateTime.Now;
+						if(notify.Visible == true)
+						{
+							Show();
+							this.WindowState = FormWindowState.Normal;
+							notify.Visible = false;
+							this.CenterToScreen();
+						}
+
 					}
           else
 					{
