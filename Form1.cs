@@ -34,6 +34,9 @@ namespace WinWifi
 			}
     }
 
+		/// <summary>
+		/// Simple class to hold a Friendly name associated with the AP MAC Adress
+		/// </summary>
 		[Serializable]
 		public class FriendlyName
 		{
@@ -49,9 +52,9 @@ namespace WinWifi
 				MAC = mac;
 				Name = name;
 			}
-		}
+		}  
 
-		public List<FriendlyName> FriendlyNames;
+		public List<FriendlyName> FriendlyNames; // List of friendly names gets saved into App-directory
 
     public WifiStatus wifistatus = null;
 
@@ -63,13 +66,13 @@ namespace WinWifi
 			FriendlyNames = new List<FriendlyName>();
 		}
 		
-		private void GetConnectedWifiStatus()
+		private void GetConnectedWifiStatus() // Assumes we are on Interface[0] - that is the default Wifi interface
 		{
 			try
 			{
 				var wlanClient = new WlanClient();
 
-				//foreach (WlanClient.WlanInterface wlanInterface in wlanClient.Interfaces)
+				//foreach (WlanClient.WlanInterface wlanInterface in wlanClient.Interfaces) // Could improve here by letting user select interface
 				{
 					var MacAdressOfConnectedAP = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.Dot11Bssid;
           wifistatus.SSID = Encoding.UTF8.GetString(wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.dot11Ssid.SSID).Replace("\0", string.Empty); ;
@@ -161,7 +164,7 @@ namespace WinWifi
         notify.Visible = true;
 
 				string notifyText = $"Connected: {tbAP.Text}";
-
+				// Display this text on the Tray-icon
 				notify.Text = notifyText;
 			}
 		}
@@ -181,11 +184,11 @@ namespace WinWifi
 			{
 				FriendlyNames = ReadFromBinaryFile<List<FriendlyName>>(@".\list.dat");
 			}
-			catch { }
+			catch { } // Don't fail if file doesn't exists
 
 			GetConnectedWifiStatus();
 
-			tsCombo.SelectedIndex = 4;
+			tsCombo.SelectedIndex = 4; // 180 seconds default value when auto-refresh is enabled
 			
 		}
 
@@ -195,8 +198,11 @@ namespace WinWifi
 			notify.Visible = false;
 		}
 
-		
-		private string GetWifiIPAdress()
+		/// <summary>
+		/// Gets the active Wifi-connections IPv4 adress
+		/// </summary>
+		/// <returns></returns>
+		private string GetWifiIPAdress() 
 		{
 			string ipAddress = "";
 			try
@@ -219,9 +225,13 @@ namespace WinWifi
 			catch { }
       return ipAddress;
 		}
-		// WriteToBinaryFile(@".\list.dat", FriendlyNames, false);
-		//  FriendlyNames = ReadFromBinaryFile<List<FriendlyName>>(@".\list.dat");
-
+		/// <summary>
+		/// Serialize object binary to and from disk
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="filePath"></param>
+		/// <param name="objectToWrite"></param>
+		/// <param name="append"></param>
 		public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
 		{
 			using (System.IO.Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
@@ -243,21 +253,28 @@ namespace WinWifi
 		{
 			GetConnectedWifiStatus();
 		}
-
+		/// <summary>
+		/// Save friendlyname
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void toolStripButton2_Click(object sender, EventArgs e)
 		{
-			if (FriendlyNames.Exists(x => x.MAC == wifistatus.APMacAdress))
+			if (!string.IsNullOrEmpty(tsTbName.Text))
 			{
-				FriendlyName f = FriendlyNames.Find(x => x.MAC == wifistatus.APMacAdress);
-				f.Name = tsTbName.Text;
+				if (FriendlyNames.Exists(x => x.MAC == wifistatus.APMacAdress))
+				{
+					FriendlyName f = FriendlyNames.Find(x => x.MAC == wifistatus.APMacAdress);
+					f.Name = tsTbName.Text;
+				}
+				else
+				{
+					FriendlyNames.Add(new FriendlyName(wifistatus.APMacAdress, tsTbName.Text));
+				}
+				WriteToBinaryFile(@".\list.dat", FriendlyNames, false);
+				tsTbName.Text = "";
+				GetConnectedWifiStatus();
 			}
-			else
-			{
-				FriendlyNames.Add(new FriendlyName(wifistatus.APMacAdress, tsTbName.Text));
-			}
-			WriteToBinaryFile(@".\list.dat", FriendlyNames, false);
-			tsTbName.Text = "";
-			GetConnectedWifiStatus();
 		}
 
 		private void timer1_Tick(object sender, EventArgs e)
@@ -267,22 +284,22 @@ namespace WinWifi
 
 		private void toolStripButton3_Click(object sender, EventArgs e)
 		{
-			if (toolStripButton3.Checked == true)
+			if (tsButtonAutoRefresh.Checked == true)
 			{
-				toolStripButton3.CheckState = CheckState.Checked;
+				tsButtonAutoRefresh.CheckState = CheckState.Checked;
 				timer1.Interval = int.Parse(tsCombo.SelectedItem.ToString()) * 1000;
 				timer1.Start();
-				toolStripButton3.Checked = true;
-				toolStripButton3.Text = "Auto refresh On";
+				tsButtonAutoRefresh.Checked = true;
+				tsButtonAutoRefresh.Text = "Auto refresh On";
 				tsLabel.Text = "Autorefresh active";
 			}
-			if (toolStripButton3.Checked == false)
+			if (tsButtonAutoRefresh.Checked == false)
 			{
 
-				toolStripButton3.CheckState = CheckState.Unchecked;
+				tsButtonAutoRefresh.CheckState = CheckState.Unchecked;
 				timer1.Stop();
-				toolStripButton3.Checked = false;
-				toolStripButton3.Text = "Auto refresh disabled";
+				tsButtonAutoRefresh.Checked = false;
+				tsButtonAutoRefresh.Text = "Auto refresh disabled";
 				tsLabel.Text = "Autorefresh disabled";
 			}
 		}
