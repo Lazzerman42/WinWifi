@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -183,7 +184,7 @@ namespace WinWifi
       this.CenterToScreen();
 			try
 			{
-				FriendlyNames = ReadFromBinaryFile<List<FriendlyName>>(@".\list.dat");
+				ReadJSONFromFile(@".\Friendlynames.txt");
 			}
 			catch { } // Don't fail if file doesn't exists
 
@@ -227,27 +228,23 @@ namespace WinWifi
       return ipAddress;
 		}
 		/// <summary>
-		/// Serialize object binary to and from disk
+		/// Write the friendlynames list to a json/txt-file
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
 		/// <param name="filePath"></param>
-		/// <param name="objectToWrite"></param>
-		/// <param name="append"></param>
-		public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+		public void WriteJSONToFile(string filePath)
 		{
-			using (System.IO.Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
-			{
-				var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-				binaryFormatter.Serialize(stream, objectToWrite);
-			}
+			string jsonString = JsonSerializer.Serialize(FriendlyNames);
+			File.WriteAllText(filePath, jsonString);
+
 		}
-		public static T ReadFromBinaryFile<T>(string filePath)
+		/// <summary>
+		/// Read the friendlynames list-file into List-object
+		/// </summary>
+		/// <param name="filePath"></param>
+		public void ReadJSONFromFile(string filePath)
 		{
-				using (Stream stream = File.Open(filePath, FileMode.Open))
-				{
-					var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-					return (T)binaryFormatter.Deserialize(stream);
-				}
+			string json = File.ReadAllText(filePath);
+			FriendlyNames = JsonSerializer.Deserialize<List<FriendlyName>>(json);
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
@@ -272,7 +269,7 @@ namespace WinWifi
 				{
 					FriendlyNames.Add(new FriendlyName(wifistatus.APMacAdress, tsTbName.Text));
 				}
-				WriteToBinaryFile(@".\list.dat", FriendlyNames, false);
+				WriteJSONToFile(@".\Friendlynames.txt");
 				tsTbName.Text = "";
 				GetConnectedWifiStatus();
 			}
@@ -313,8 +310,13 @@ namespace WinWifi
 			if(bTimerRunning) // if it was running, start it again with new interval
 				timer1.Start();
 
-			tbFocusDump.Focus();
+			tbFocusDump.Focus(); // Dummy control outside form, just to set focus somewhere
 			Application.DoEvents();
+		}
+
+		private void tsTbName_Click(object sender, EventArgs e)
+		{
+			tsTbName.Text = "";
 		}
 	}
 }

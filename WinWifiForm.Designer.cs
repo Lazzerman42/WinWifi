@@ -197,6 +197,7 @@ namespace WinWifi
 			this.tsTbName.Name = "tsTbName";
 			this.tsTbName.Size = new System.Drawing.Size(150, 31);
 			this.tsTbName.Text = "friendly name";
+			this.tsTbName.Click += new System.EventHandler(this.tsTbName_Click);
 			// 
 			// toolStripSeparator2
 			// 
