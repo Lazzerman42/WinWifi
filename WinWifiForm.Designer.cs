@@ -1,7 +1,7 @@
 ﻿
 namespace WinWifi
 {
-	partial class Form1
+	partial class WinWifiForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -30,7 +30,7 @@ namespace WinWifi
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WinWifiForm));
 			this.notify = new System.Windows.Forms.NotifyIcon(this.components);
 			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -230,7 +230,7 @@ namespace WinWifi
 			// tsLabel
 			// 
 			this.tsLabel.Name = "tsLabel";
-			this.tsLabel.Size = new System.Drawing.Size(116, 15);
+			this.tsLabel.Size = new System.Drawing.Size(116, 28);
 			this.tsLabel.Text = "Autorefresh disabled";
 			// 
 			// timer1
@@ -329,7 +329,7 @@ namespace WinWifi
 			this.tbOldTS.Text = "Old TS";
 			this.tbOldTS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// Form1
+			// WinWifiForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -350,7 +350,7 @@ namespace WinWifi
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label6);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "Form1";
+			this.Name = "WinWifiForm";
 			this.Text = "Wifi Connected AP - Lazze Ziden 2021 -";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);

@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace WinWifi
 {
-	public partial class Form1 : Form
+	public partial class WinWifiForm : Form
 	{
     public class WifiStatus
 		{
@@ -58,7 +58,7 @@ namespace WinWifi
 
     public WifiStatus wifistatus = null;
 
-		public Form1()
+		public WinWifiForm()
 		{
 			InitializeComponent();
       notify.Visible = false;
