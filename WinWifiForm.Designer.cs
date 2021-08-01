@@ -56,6 +56,7 @@ namespace WinWifi
 			this.tbCurrentTS = new System.Windows.Forms.Label();
 			this.tbOldAP = new System.Windows.Forms.Label();
 			this.tbOldTS = new System.Windows.Forms.Label();
+			this.tbFocusDump = new System.Windows.Forms.TextBox();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -147,6 +148,7 @@ namespace WinWifi
 			// 
 			// toolStrip1
 			// 
+			this.toolStrip1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
@@ -160,7 +162,7 @@ namespace WinWifi
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-			this.toolStrip1.Size = new System.Drawing.Size(460, 31);
+			this.toolStrip1.Size = new System.Drawing.Size(459, 31);
 			this.toolStrip1.TabIndex = 16;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -191,7 +193,7 @@ namespace WinWifi
 			// 
 			// tsTbName
 			// 
-			this.tsTbName.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.tsTbName.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.tsTbName.Name = "tsTbName";
 			this.tsTbName.Size = new System.Drawing.Size(150, 31);
 			this.tsTbName.Text = "friendly name";
@@ -214,7 +216,9 @@ namespace WinWifi
 			// 
 			// tsCombo
 			// 
+			this.tsCombo.AutoSize = false;
 			this.tsCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.tsCombo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.tsCombo.Items.AddRange(new object[] {
             "2",
             "5",
@@ -223,14 +227,15 @@ namespace WinWifi
             "180",
             "600"});
 			this.tsCombo.Name = "tsCombo";
-			this.tsCombo.Size = new System.Drawing.Size(75, 31);
+			this.tsCombo.Size = new System.Drawing.Size(55, 24);
 			this.tsCombo.ToolTipText = "Refresh interval in seconds";
 			this.tsCombo.SelectedIndexChanged += new System.EventHandler(this.tsCombo_SelectedIndexChanged);
 			// 
 			// tsLabel
 			// 
+			this.tsLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.tsLabel.Name = "tsLabel";
-			this.tsLabel.Size = new System.Drawing.Size(116, 28);
+			this.tsLabel.Size = new System.Drawing.Size(138, 28);
 			this.tsLabel.Text = "Autorefresh disabled";
 			// 
 			// timer1
@@ -329,11 +334,19 @@ namespace WinWifi
 			this.tbOldTS.Text = "Old TS";
 			this.tbOldTS.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// tbFocusDump
+			// 
+			this.tbFocusDump.Location = new System.Drawing.Point(486, 168);
+			this.tbFocusDump.Name = "tbFocusDump";
+			this.tbFocusDump.Size = new System.Drawing.Size(100, 20);
+			this.tbFocusDump.TabIndex = 24;
+			// 
 			// WinWifiForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-			this.ClientSize = new System.Drawing.Size(460, 273);
+			this.ClientSize = new System.Drawing.Size(459, 273);
+			this.Controls.Add(this.tbFocusDump);
 			this.Controls.Add(this.tbOldTS);
 			this.Controls.Add(this.tbOldAP);
 			this.Controls.Add(this.tbCurrentTS);
@@ -350,6 +363,7 @@ namespace WinWifi
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label6);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MaximizeBox = false;
 			this.Name = "WinWifiForm";
 			this.Text = "Wifi Connected AP - Lazze Ziden 2021 -";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -388,6 +402,7 @@ namespace WinWifi
 		private System.Windows.Forms.Label tbOldAP;
 		private System.Windows.Forms.Label tbOldTS;
 		private System.Windows.Forms.ToolStripLabel tsLabel;
+		private System.Windows.Forms.TextBox tbFocusDump;
 	}
 }
 

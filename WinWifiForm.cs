@@ -52,7 +52,9 @@ namespace WinWifi
 				MAC = mac;
 				Name = name;
 			}
-		}  
+		}
+
+		public static WlanClient wlanClient;
 
 		public List<FriendlyName> FriendlyNames; // List of friendly names gets saved into App-directory
 
@@ -64,14 +66,13 @@ namespace WinWifi
       notify.Visible = false;
       wifistatus = new WifiStatus();
 			FriendlyNames = new List<FriendlyName>();
+			wlanClient = new WlanClient();
 		}
 		
 		private void GetConnectedWifiStatus() // Assumes we are on Interface[0] - that is the default Wifi interface
 		{
 			try
 			{
-				var wlanClient = new WlanClient();
-
 				//foreach (WlanClient.WlanInterface wlanInterface in wlanClient.Interfaces) // Could improve here by letting user select interface
 				{
 					var MacAdressOfConnectedAP = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.Dot11Bssid;
@@ -276,7 +277,7 @@ namespace WinWifi
 				GetConnectedWifiStatus();
 			}
 		}
-
+	
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			GetConnectedWifiStatus();
@@ -295,7 +296,6 @@ namespace WinWifi
 			}
 			if (tsButtonAutoRefresh.Checked == false)
 			{
-
 				tsButtonAutoRefresh.CheckState = CheckState.Unchecked;
 				timer1.Stop();
 				tsButtonAutoRefresh.Checked = false;
@@ -306,9 +306,15 @@ namespace WinWifi
 
 		private void tsCombo_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			bool bTimerRunning = timer1.Enabled;
 			timer1.Stop();
 			timer1.Interval = int.Parse(tsCombo.SelectedItem.ToString()) * 1000;
-			timer1.Start();
+	
+			if(bTimerRunning) // if it was running, start it again with new interval
+				timer1.Start();
+
+			tbFocusDump.Focus();
+			Application.DoEvents();
 		}
 	}
 }
