@@ -165,7 +165,7 @@ namespace WinWifi
         Hide();
         notify.Visible = true;
 
-				string notifyText = $"Connected: {tbAP.Text}";
+				string notifyText = $"{tbAP.Text}\r\nQality: {tbQuality.Text}";
 				// Display this text on the Tray-icon
 				notify.Text = notifyText;
 			}
@@ -270,8 +270,14 @@ namespace WinWifi
 					FriendlyNames.Add(new FriendlyName(wifistatus.APMacAdress, tsTbName.Text));
 				}
 				WriteJSONToFile(@".\Friendlynames.txt");
-				tsTbName.Text = "";
+				tsTbName.Text = "Saved...";
+				Application.DoEvents();
 				GetConnectedWifiStatus();
+				// Displays the Saved text for 1 sec
+				var t = Task.Run(async delegate { await Task.Delay(1000); return 42; }); t.Wait();
+				
+				tsTbName.Text = "";
+				
 			}
 		}
 	
