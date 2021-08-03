@@ -1,9 +1,7 @@
 ﻿using NativeWifi;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -17,23 +15,23 @@ namespace WinWifi
 {
 	public partial class WinWifiForm : Form
 	{
-    public class WifiStatus
+		public class WifiStatus
 		{
 			public string SSID { get; set; }
 			public string APMacAdress { get; set; }
 			public DateTime CurrentTS { get; set; }
-      public DateTime LastTS { get; set; }
-      public string OLDAPMacAdress { get; set; }
-      public uint RX { get; set; }
-      public uint TX { get; set; }
-      public uint SignalQuality { get; set; }
+			public DateTime LastTS { get; set; }
+			public string OLDAPMacAdress { get; set; }
+			public uint RX { get; set; }
+			public uint TX { get; set; }
+			public uint SignalQuality { get; set; }
 			public string WifiIP { get; set; }
 
 			public WifiStatus()
 			{
 
 			}
-    }
+		}
 
 		/// <summary>
 		/// Simple class to hold a Friendly name associated with the AP MAC Adress
@@ -59,17 +57,17 @@ namespace WinWifi
 
 		public List<FriendlyName> FriendlyNames; // List of friendly names gets saved into App-directory
 
-    public WifiStatus wifistatus = null;
+		public WifiStatus wifistatus = null;
 
 		public WinWifiForm()
 		{
 			InitializeComponent();
-      notify.Visible = false;
-      wifistatus = new WifiStatus();
+			notify.Visible = false;
+			wifistatus = new WifiStatus();
 			FriendlyNames = new List<FriendlyName>();
 			wlanClient = new WlanClient();
 		}
-		
+
 		private void GetConnectedWifiStatus() // Assumes we are on Interface[0] - that is the default Wifi interface
 		{
 			try
@@ -77,31 +75,31 @@ namespace WinWifi
 				//foreach (WlanClient.WlanInterface wlanInterface in wlanClient.Interfaces) // Could improve here by letting user select interface
 				{
 					var MacAdressOfConnectedAP = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.Dot11Bssid;
-          wifistatus.SSID = Encoding.UTF8.GetString(wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.dot11Ssid.SSID).Replace("\0", string.Empty); ;
+					wifistatus.SSID = Encoding.UTF8.GetString(wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.dot11Ssid.SSID).Replace("\0", string.Empty); ;
 					wifistatus.TX = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.txRate;
-          wifistatus.RX = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.rxRate;
-          wifistatus.SignalQuality = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.wlanSignalQuality;
+					wifistatus.RX = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.rxRate;
+					wifistatus.SignalQuality = wlanClient.Interfaces[0].CurrentConnection.wlanAssociationAttributes.wlanSignalQuality;
 
-          string MAC = MacAdressOfConnectedAP.ToString();
+					string MAC = MacAdressOfConnectedAP.ToString();
 					var output = string.Join(":", Enumerable.Range(0, 6)
 						.Select(i => MAC.Substring(i * 2, 2)));
 
 					MAC = output;
-					
-					if( string.IsNullOrEmpty(wifistatus.APMacAdress))
+
+					if (string.IsNullOrEmpty(wifistatus.APMacAdress))
 					{
 						wifistatus.APMacAdress = MAC;
 						wifistatus.CurrentTS = DateTime.Now;
 					}
 
-					if( wifistatus.APMacAdress != MAC )
+					if (wifistatus.APMacAdress != MAC)
 					{
 						// New AP
 						wifistatus.OLDAPMacAdress = wifistatus.APMacAdress;
 						wifistatus.LastTS = wifistatus.CurrentTS;
 						wifistatus.APMacAdress = MAC;
 						wifistatus.CurrentTS = DateTime.Now;
-											
+
 						if (notify.Visible == true)
 						{
 							Show();
@@ -110,7 +108,7 @@ namespace WinWifi
 							this.CenterToScreen();
 						}
 					}
-          else
+					else
 					{
 						wifistatus.CurrentTS = DateTime.Now;
 					}
@@ -118,7 +116,7 @@ namespace WinWifi
 					wifistatus.WifiIP = GetWifiIPAdress();
 
 					FriendlyName f = FriendlyNames.Find(x => x.MAC == MAC);
-					if(f != null)
+					if (f != null)
 					{
 						tbAP.Text = f.Name + " : " + wifistatus.APMacAdress;
 					}
@@ -135,35 +133,35 @@ namespace WinWifi
 					}
 					else
 						tbOldAP.Text = wifistatus.OLDAPMacAdress;
-	
+
 					tbOldTS.Text = wifistatus.LastTS.ToLongTimeString();
 					if (tbOldTS.Text.Equals("00:00:00"))
 						tbOldTS.Text = "";
 
-					tbQuality.Text = wifistatus.SignalQuality.ToString() +"%";
-					tbSpeed.Text = (wifistatus.TX / 1000).ToString() + " / " + (wifistatus.RX/1000).ToString() + " mbps" ;
+					tbQuality.Text = wifistatus.SignalQuality.ToString() + "%";
+					tbSpeed.Text = (wifistatus.TX / 1000).ToString() + " / " + (wifistatus.RX / 1000).ToString() + " mbps";
 
-        }
+				}
 			}
 			catch (Exception)
 			{
 				wifistatus.APMacAdress = string.Empty;
-				tbAP.Text="Not connected to WiFi...";
-				
-        wifistatus.OLDAPMacAdress = string.Empty;
-        wifistatus.RX = 0;
-        wifistatus.TX = 0;
-        wifistatus.SSID = string.Empty;
-        wifistatus.SignalQuality = 0;
+				tbAP.Text = "Not connected to WiFi...";
+
+				wifistatus.OLDAPMacAdress = string.Empty;
+				wifistatus.RX = 0;
+				wifistatus.TX = 0;
+				wifistatus.SSID = string.Empty;
+				wifistatus.SignalQuality = 0;
 			}
 		}
 
 		private void Form1_Resize(object sender, EventArgs e)
 		{
-      if (this.WindowState == FormWindowState.Minimized)
-      {
-        Hide();
-        notify.Visible = true;
+			if (this.WindowState == FormWindowState.Minimized)
+			{
+				Hide();
+				notify.Visible = true;
 
 				string notifyText = $"{tbAP.Text}\r\nQality: {tbQuality.Text}";
 				// Display this text on the Tray-icon
@@ -173,15 +171,15 @@ namespace WinWifi
 
 		private void notify_DoubleClick(object sender, EventArgs e)
 		{
-      Show();
-      this.WindowState = FormWindowState.Normal;
-      notify.Visible = false;
-      this.CenterToScreen();
-    }
+			Show();
+			this.WindowState = FormWindowState.Normal;
+			notify.Visible = false;
+			this.CenterToScreen();
+		}
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-      this.CenterToScreen();
+			this.CenterToScreen();
 			try
 			{
 				ReadJSONFromFile(@".\Friendlynames.txt");
@@ -191,7 +189,7 @@ namespace WinWifi
 			GetConnectedWifiStatus();
 
 			tsCombo.SelectedIndex = 4; // 180 seconds default value when auto-refresh is enabled
-			
+
 		}
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -204,7 +202,7 @@ namespace WinWifi
 		/// Gets the active Wifi-connections IPv4 adress
 		/// </summary>
 		/// <returns></returns>
-		private string GetWifiIPAdress() 
+		private string GetWifiIPAdress()
 		{
 			string ipAddress = "";
 			try
@@ -225,7 +223,7 @@ namespace WinWifi
 				}
 			}
 			catch { }
-      return ipAddress;
+			return ipAddress;
 		}
 		/// <summary>
 		/// Write the friendlynames list to a json/txt-file
@@ -275,12 +273,11 @@ namespace WinWifi
 				GetConnectedWifiStatus();
 				// Displays the Saved text for 1 sec
 				var t = Task.Run(async delegate { await Task.Delay(1000); return 42; }); t.Wait();
-				
+
 				tsTbName.Text = "";
-				
 			}
 		}
-	
+
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			GetConnectedWifiStatus();
@@ -312,8 +309,8 @@ namespace WinWifi
 			bool bTimerRunning = timer1.Enabled;
 			timer1.Stop();
 			timer1.Interval = int.Parse(tsCombo.SelectedItem.ToString()) * 1000;
-	
-			if(bTimerRunning) // if it was running, start it again with new interval
+
+			if (bTimerRunning) // if it was running, start it again with new interval
 				timer1.Start();
 
 			tbFocusDump.Focus(); // Dummy control outside form, just to set focus somewhere
